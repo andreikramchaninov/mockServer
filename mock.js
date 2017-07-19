@@ -1,5 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var cors = require('cors');
 
 var app = express();
 
@@ -8,7 +9,7 @@ var port = 8080;
 var userDataBase = require('./userData');
 var projectDataBase = require('./projectData');
 
-
+app.use(cors({origin: 'http://localhost:3000'}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
