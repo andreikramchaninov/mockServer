@@ -11,9 +11,9 @@ function Version(id, user_id, project_id, version_number,
 };
 
 var version0 = new Version(0,0,0,0,"/myfile/test.xml",1, "base project0 version", "01012017");
-var version1 = new Project(1,1,0,1,"/myfile/test.xml",0, "unapproved project version", "01012017");
-var version2 = new Project(2,2,1,0,"/myfile/test.xml",1, "base project1 version", "01012017");
-var version3 = new Project(3,3,1,1,"/myfile/test.xml",0, "unapproved project version", "01012017");
+var version1 = new Version(1,1,0,1,"/myfile/test.xml",0, "unapproved project version", "01012017");
+var version2 = new Version(2,2,1,0,"/myfile/test.xml",1, "base project1 version", "01012017");
+var version3 = new Version(3,3,1,1,"/myfile/test.xml",0, "unapproved project version", "01012017");
 
 
 var versionData = [version0, version1, version2, version3];
