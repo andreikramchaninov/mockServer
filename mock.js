@@ -147,7 +147,13 @@ app.post('/api/v1/project/', function (req, res) {
 //==========================================
 
 //get all versions by project
-
+app.get('/api/v1/project/:id/versions/all', function (req, res) {
+    var versionsByProject = versionDataBase.versionData.filter(function(Version) {
+        return Version.project_id == req.params.id;
+    });
+    var result = jsonGenerator(versionsByProject, null);
+    res.send(result);
+});
 
 
 //get version by id
