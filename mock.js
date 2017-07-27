@@ -76,6 +76,9 @@ function noteGenerator(id) {
     return json;
 }
 
+//=========== user requests =============
+//=======================================
+
 //get all users
 app.get('/api/v1/user/', function (req, res) {
     var users = userDataBase.userData;
@@ -105,6 +108,9 @@ app.post('/api/v1/user/', function (req, res) {
     res.send(user);
 });
 
+//=========== project requests =============
+//==========================================
+
 //get all projects
 app.get('/api/v1/project/', function (req, res) {
     var projects = projectDataBase.projectData;
@@ -133,6 +139,28 @@ app.post('/api/v1/project/', function (req, res) {
     projects.push(project);
     res.send(project);
 });
+
+
+//=========== version requests =============
+//==========================================
+
+//get all versions by project
+
+
+
+//get version by id
+
+//post a new version
+
+
+//=========== collaborator requests =============
+//===============================================
+
+//get all collaborators in project
+
+//get collaborator in project by id
+
+//add collaborator to project
 
 
 app.use(function (req, res) {
