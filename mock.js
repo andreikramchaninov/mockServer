@@ -8,6 +8,8 @@ var port = 8080;
 
 var userDataBase = require('./userData');
 var projectDataBase = require('./projectData');
+var versionDataBase = require('./versionData');
+var collaboratorDataBase = require('./collaboratorData');
 
 app.use(cors({origin: 'http://localhost:3000'}));
 app.use(bodyParser.json());
