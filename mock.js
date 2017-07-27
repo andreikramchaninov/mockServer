@@ -147,16 +147,26 @@ app.post('/api/v1/project/', function (req, res) {
 //==========================================
 
 //get all versions by project
-app.get('/api/v1/project/:id/versions/all', function (req, res) {
+app.get('/api/v1/project/:p_id/versions/all', function (req, res) {
     var versionsByProject = versionDataBase.versionData.filter(function(Version) {
-        return Version.project_id == req.params.id;
+        return Version.project_id == req.params.p_id;
     });
     var result = jsonGenerator(versionsByProject, null);
     res.send(result);
 });
 
 
-//get version by id
+//get version by version_number
+app.get('/api/v1/project/:id/versions/:number', function (req, res, next) {
+    var versionsByProject = versionDataBase.versionData.filter(function(Version) {
+        return Version.project_id == req.params.id;
+    });
+    var versionByNumber = versionsByProject.filter(function(Version) {
+        return Version.version_number == req.params.number;
+    });
+    var result = jsonGenerator(versionByNumber, null);
+    res.send(result);
+});
 
 //post a new version
 
