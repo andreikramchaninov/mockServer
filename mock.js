@@ -147,9 +147,9 @@ app.post('/api/v1/project/', function (req, res) {
 //==========================================
 
 //get all versions by project
-app.get('/api/v1/project/:p_id/versions/all', function (req, res) {
+app.get('/api/v1/project/:id/versions/all', function (req, res) {
     var versionsByProject = versionDataBase.versionData.filter(function(Version) {
-        return Version.project_id == req.params.p_id;
+        return Version.project_id == req.params.id;
     });
     var result = jsonGenerator(versionsByProject, null);
     res.send(result);
@@ -168,7 +168,19 @@ app.get('/api/v1/project/:id/versions/:number', function (req, res, next) {
     res.send(result);
 });
 
-//post a new version
+//add a new version
+app.post('/api/v1/project/:id/versions', function (req, res) {
+    var bodyData = req.body;
+    var id = versionDataBase.versionData.length;
+    var versionsByProject = versionDataBase.versionData.filter(function(Version) {
+        return Version.project_id == req.params.id;
+    });
+    var versionsNumber = versionsByProject.length;
+    var version = new versionDataBase.Version(id, bodyData.user_id, req.params.id, 
+        versionsNumber, "/myfile/test.xml", 0, "just added new version", "01012017");
+    versionDataBase.versionData.push(version);
+    res.send(version);
+});
 
 
 //=========== collaborator requests =============
