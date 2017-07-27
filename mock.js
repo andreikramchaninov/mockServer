@@ -6,10 +6,10 @@ var app = express();
 
 var port = 8080;
 
-var userDataBase = require('./userData');
-var projectDataBase = require('./projectData');
-var versionDataBase = require('./versionData');
-var collaboratorDataBase = require('./collaboratorData');
+var userDataBase = require('./data/userData');
+var projectDataBase = require('./data/projectData');
+var versionDataBase = require('./data/versionData');
+var collaboratorDataBase = require('./data/collaboratorData');
 
 app.use(cors({origin: 'http://localhost:3000'}));
 app.use(bodyParser.json());
