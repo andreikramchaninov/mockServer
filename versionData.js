@@ -7,7 +7,7 @@ function Version(id, user_id, project_id, version_number,
     this.download_link = download_link;
     this.approved = approved;
     this.commit_message = commit_message;
-    this.created_date = downloacreated_dated_link;
+    this.created_date = created_date;
 };
 
 var version0 = new Version(0,0,0,0,"/myfile/test.xml",1, "base project0 version", "01012017");
