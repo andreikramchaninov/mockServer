@@ -1,7 +1,7 @@
-function Project(id, user_id, name, created_date, last_version_number) {
+function Project(id, user_id, project_name, created_date, last_version_number) {
     this.id = id;
     this.user_id = user_id;
-    this.name = name;
+    this.project_name = project_name;
     this.created_date = created_date;
     this.last_version_number = last_version_number;
 };

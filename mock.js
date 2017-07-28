@@ -156,10 +156,12 @@ app.post('/api/v1/project/', function (req, res) {
     var bodyData = req.body;
     var projects = projectDataBase.projectData;
     var id = projects.length;
-    var project = new projectDataBase.Project(id, bodyData.user_id, bodyData.name, "01012017", 0);
+    var project = new projectDataBase.Project(id, bodyData.user_id, bodyData.project_name, "01012017", 0, 0);
     projects.push(project);
     res.send(project);
 });
+
+//update project
 
 
 //=========== version requests =============
