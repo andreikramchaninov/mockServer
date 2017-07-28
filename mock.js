@@ -110,6 +110,20 @@ app.post('/api/v1/user/', function (req, res) {
     res.send(user);
 });
 
+//update user 
+ app.put('/api/v1/user/:id', function (req, res) {
+    var bodyData = req.body;
+    var user = userDataBase.userData[req.params.id];
+    user.username = bodyData.username;
+    user.email = bodyData.email;
+    user.photo = bodyData.photo;
+    user.bio = bodyData.bio;
+    user.age = bodyData.age;
+    user.instrument = bodyData.instrument;
+    user.phoneNumber = bodyData.phoneNumber;
+    res.send(user);
+ });
+
 //=========== project requests =============
 //==========================================
 
