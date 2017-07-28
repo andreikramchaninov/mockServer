@@ -201,10 +201,11 @@ app.get('/api/v1/project/:id/versions/:number', function (req, res, next) {
     var versionsByProject = versionDataBase.versionData.filter(function(Version) {
         return Version.project_id == req.params.id;
     });
-    var versionByNumber = versionsByProject.filter(function(Version) {
+    var versionsByNumber = versionsByProject.filter(function(Version) {
         return Version.version_number == req.params.number;
     });
-    var result = jsonGenerator(versionByNumber, null);
+    var version = versionsByNumber[0];
+    var result = jsonGenerator(version, null);
     res.send(result);
 });
 
@@ -228,10 +229,10 @@ app.put('/api/v1/project/:id/versions/:number', function (req, res) {
     var versionsByProject = versionDataBase.versionData.filter(function(Version) {
         return Version.project_id == req.params.id;
     });
-    var versionByNumber = versionsByProject.filter(function(Version) {
+    var versionsByNumber = versionsByProject.filter(function(Version) {
         return Version.version_number == req.params.number;
     });
-    var updatedVersion = versionByNumber[0];
+    var updatedVersion = versionsByNumber[0];
     updatedVersion.approved = bodyData.approved;
     projectDataBase.projectData.last_version_number = req.params.number;
     res.send(updatedVersion);
@@ -242,10 +243,10 @@ app.delete('/api/v1/project/:id/versions/:number', function (req, res) {
     var versionsByProject = versionDataBase.versionData.filter(function(Version) {
         return Version.project_id == req.params.id;
     });
-    var versionByNumber = versionsByProject.filter(function(Version) {
+    var versionsByNumber = versionsByProject.filter(function(Version) {
         return Version.version_number == req.params.number;
     });
-    var deletedVersion = versionByNumber[0];
+    var deletedVersion = versionsByNumber[0];
     deletedVersion.archived = 1;
     res.send("Version was deleted");
 });
@@ -254,12 +255,63 @@ app.delete('/api/v1/project/:id/versions/:number', function (req, res) {
 //=========== collaborator requests =============
 //===============================================
 
-//get all collaborators in project
+//get all collaborators in project 
+app.get('/api/v1/project/:id/collaborators', function(req, res) {
+    var collaboratorsByProject = collaboratorDataBase.collaboratorData.filter(function(Collaborator) {
+        return Collaborator.project_id == req.params.id;
+    });
+    res.send(collaboratorsByProject);
+});
 
-//get collaborator in project by id
+//get collaborator in project by user id
+app.get('/api/v1/project/:p_id/collaborators/:user_id', function(req, res) {
+    var collaboratorsByProject = collaboratorDataBase.collaboratorData.filter(function(Collaborator) {
+        return Collaborator.project_id == req.params.p_id;
+    });
+    var collaboratorsByUser = collaboratorsByProject.filter(function(Collaborator) {
+        return Collaborator.user_id = req.params.user_id;
+    });
+    var collaborator = collaboratorsByUser[0];
+    res.send(collaborator);
+});
 
 //add collaborator to project
+app.post('/api/v1/project/:p_id/collaborators/:user_id', function(req, res) {
+    var bodyData = req.body;
+    var coll_id = collaboratorDataBase.collaboratorData.length;
+    var collaborator = new collaboratorDataBase.Collaborator(coll_id, req.params.user_id,
+        req.params.p_id, bodyData.role, 0);
+    collaboratorDataBase.collaboratorData.push(collaborator);
+    res.send(collaborator);
+});
 
+//update collaborator role
+app.put('/api/v1/project/:p_id/collaborators/:user_id', function(req, res) {
+    var bodyData = req.body;
+    var collaboratorsByProject = collaboratorDataBase.collaboratorData.filter(function(Collaborator) {
+        return Collaborator.project_id == req.params.p_id;
+    });
+    var collaboratorsByUser = collaboratorsByProject.filter(function(Collaborator) {
+        return Collaborator.user_id = req.params.user_id;
+    });
+    var collaborator = collaboratorsByUser[0];
+    collaborator.role = bodyData.role;
+    res.send(collaborator);
+});
+
+//delete collaborator from project
+app.delete('/api/v1/project/:p_id/collaborators/:user_id', function(req, res) {
+    var collaboratorsByProject = collaboratorDataBase.collaboratorData.filter(function(Collaborator) {
+        return Collaborator.project_id == req.params.p_id;
+    });
+    var collaboratorsByUser = collaboratorsByProject.filter(function(Collaborator) {
+        return Collaborator.user_id = req.params.user_id;
+    });
+    var collaborator = collaboratorsByUser[0];
+    collaborator.role = 2;
+    collaborator.archived = 1;
+    res.send(req.params.user_id +" user was deleted from collaborators");
+});
 
 app.use(function (req, res) {
     var error = errorGenerator(404, 'wrong request')
