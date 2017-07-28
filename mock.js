@@ -108,7 +108,8 @@ app.post('/api/v1/user/', function (req, res) {
     var user = new userDataBase.User(id, bodyData.username, bodyData.password, bodyData.email, 
         0, "none", "none", 18, "none", "none");
     users.push(user);
-    res.send(user);
+    var result = jsonGenerator(user, null);
+    res.send(result);
 });
 
 //update user 
@@ -120,13 +121,16 @@ app.post('/api/v1/user/', function (req, res) {
     user.age = bodyData.age;
     user.instrument = bodyData.instrument;
     user.phoneNumber = bodyData.phoneNumber;
-    res.send(user);
+    var result = jsonGenerator(user, null);
+    res.send(result);
  });
 
  //delete user
  app.delete('/api/v1/user/:id', function (req, res) {
     userDataBase.userData[req.params.id].archived = 1;
-    res.send("User " + req.params.id + " was deleted");
+    var result = jsonGenerator("User " + req.params.id 
+        + " was deleted", null);
+    res.send(result);
  });
 
 //=========== project requests =============
@@ -158,7 +162,8 @@ app.post('/api/v1/project/', function (req, res) {
     var id = projects.length;
     var project = new projectDataBase.Project(id, bodyData.user_id, bodyData.project_name, "01012017", 0, 0);
     projects.push(project);
-    res.send(project);
+    var result = jsonGenerator(project, null);
+    res.send(result);
 });
 
 //update project
@@ -166,7 +171,8 @@ app.put('/api/v1/project/:id', function (req, res) {
     var bodyData = req.body;
     var project = projectDataBase.projectData[req.params.id];
     project.last_version_number = bodyData.last_version_number;
-    res.send(project);
+    var result = jsonGenerator(project, null);
+    res.send(result);
 });
 
 //delete project
@@ -178,8 +184,10 @@ app.delete('/api/v1/project/:id', function (req, res) {
     for (var i = 0; i < versionsByProject.length; i++) {
         versionsByProject[i].archived = 1;
     };
-    res.send("Project " + req.params.id + " and its " + versionsByProject.length + 
-        " versions were deleted");
+    var response = "Project " + req.params.id + " and its " + versionsByProject.length + 
+        " versions were deleted";
+    var result = jsonGenerator(response, null);
+    res.send(result);
 });
 
 
@@ -220,7 +228,8 @@ app.post('/api/v1/project/:id/versions', function (req, res) {
     var version = new versionDataBase.Version(id, bodyData.user_id, req.params.id, 
         versionsNumber, "/myfile/test.xml", 0, "just added new version", "01012017", 0);
     versionDataBase.versionData.push(version);
-    res.send(version);
+    var result = jsonGenerator(version, null);
+    res.send(result);
 });
 
 //update version 
@@ -236,6 +245,8 @@ app.put('/api/v1/project/:id/versions/:number', function (req, res) {
     updatedVersion.approved = bodyData.approved;
     projectDataBase.projectData.last_version_number = req.params.number;
     res.send(updatedVersion);
+    var result = jsonGenerator(updatedVersion, null);
+    res.send(result);
 });
 
 //delete version
@@ -248,7 +259,8 @@ app.delete('/api/v1/project/:id/versions/:number', function (req, res) {
     });
     var deletedVersion = versionsByNumber[0];
     deletedVersion.archived = 1;
-    res.send("Version was deleted");
+    var result = jsonGenerator("Version was deleted", null);
+    res.send(result);
 });
 
 
@@ -260,7 +272,8 @@ app.get('/api/v1/project/:id/collaborators', function(req, res) {
     var collaboratorsByProject = collaboratorDataBase.collaboratorData.filter(function(Collaborator) {
         return Collaborator.project_id == req.params.id;
     });
-    res.send(collaboratorsByProject);
+    var result = jsonGenerator(collaboratorsByProject, null);
+    res.send(result);
 });
 
 //get collaborator in project by user id
@@ -271,8 +284,8 @@ app.get('/api/v1/project/:p_id/collaborators/:user_id', function(req, res) {
     var collaboratorsByUser = collaboratorsByProject.filter(function(Collaborator) {
         return Collaborator.user_id = req.params.user_id;
     });
-    var collaborator = collaboratorsByUser[0];
-    res.send(collaborator);
+    var result = jsonGenerator(collaboratorsByUser[0], null);
+    res.send(result);
 });
 
 //add collaborator to project
@@ -282,7 +295,8 @@ app.post('/api/v1/project/:p_id/collaborators/:user_id', function(req, res) {
     var collaborator = new collaboratorDataBase.Collaborator(coll_id, req.params.user_id,
         req.params.p_id, bodyData.role, 0);
     collaboratorDataBase.collaboratorData.push(collaborator);
-    res.send(collaborator);
+    var result = jsonGenerator(collaborator, null);
+    res.send(result);
 });
 
 //update collaborator role
@@ -296,7 +310,8 @@ app.put('/api/v1/project/:p_id/collaborators/:user_id', function(req, res) {
     });
     var collaborator = collaboratorsByUser[0];
     collaborator.role = bodyData.role;
-    res.send(collaborator);
+    var result = jsonGenerator(collaborator, null);
+    res.send(result);
 });
 
 //delete collaborator from project
@@ -310,7 +325,9 @@ app.delete('/api/v1/project/:p_id/collaborators/:user_id', function(req, res) {
     var collaborator = collaboratorsByUser[0];
     collaborator.role = 2;
     collaborator.archived = 1;
-    res.send(req.params.user_id +" user was deleted from collaborators");
+    var response = req.params.user_id + " user was deleted from collaborators";
+    var result = jsonGenerator(response, null);
+    res.send(result);
 });
 
 app.use(function (req, res) {
