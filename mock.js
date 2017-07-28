@@ -105,7 +105,8 @@ app.post('/api/v1/user/', function (req, res) {
     var bodyData = req.body;
     var users = userDataBase.userData;
     var id = users.length;
-    var user = new userDataBase.User(id, bodyData.username, bodyData.email, "none", "none", 18, "none", "none");
+    var user = new userDataBase.User(id, bodyData.username, bodyData.password, bodyData.email, 
+        0, "none", "none", 18, "none", "none");
     users.push(user);
     res.send(user);
 });
@@ -114,14 +115,18 @@ app.post('/api/v1/user/', function (req, res) {
  app.put('/api/v1/user/:id', function (req, res) {
     var bodyData = req.body;
     var user = userDataBase.userData[req.params.id];
-    user.username = bodyData.username;
-    user.email = bodyData.email;
     user.photo = bodyData.photo;
     user.bio = bodyData.bio;
     user.age = bodyData.age;
     user.instrument = bodyData.instrument;
     user.phoneNumber = bodyData.phoneNumber;
     res.send(user);
+ });
+
+ //delete user
+ app.delete('/api/v1/user/:id', function (req, res) {
+    userDataBase.userData[req.params.id].archived = 1;
+    res.send("User " + req.params.id + " was deleted");
  });
 
 //=========== project requests =============
