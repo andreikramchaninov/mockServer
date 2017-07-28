@@ -217,9 +217,37 @@ app.post('/api/v1/project/:id/versions', function (req, res) {
     });
     var versionsNumber = versionsByProject.length;
     var version = new versionDataBase.Version(id, bodyData.user_id, req.params.id, 
-        versionsNumber, "/myfile/test.xml", 0, "just added new version", "01012017");
+        versionsNumber, "/myfile/test.xml", 0, "just added new version", "01012017", 0);
     versionDataBase.versionData.push(version);
     res.send(version);
+});
+
+//update version 
+app.put('/api/v1/project/:id/versions/:number', function (req, res) {
+    var bodyData = req.body;
+    var versionsByProject = versionDataBase.versionData.filter(function(Version) {
+        return Version.project_id == req.params.id;
+    });
+    var versionByNumber = versionsByProject.filter(function(Version) {
+        return Version.version_number == req.params.number;
+    });
+    var updatedVersion = versionByNumber[0];
+    updatedVersion.approved = bodyData.approved;
+    projectDataBase.projectData.last_version_number = req.params.number;
+    res.send(updatedVersion);
+});
+
+//delete version
+app.delete('/api/v1/project/:id/versions/:number', function (req, res) {
+    var versionsByProject = versionDataBase.versionData.filter(function(Version) {
+        return Version.project_id == req.params.id;
+    });
+    var versionByNumber = versionsByProject.filter(function(Version) {
+        return Version.version_number == req.params.number;
+    });
+    var deletedVersion = versionByNumber[0];
+    deletedVersion.archived = 1;
+    res.send("Version was deleted");
 });
 
 
