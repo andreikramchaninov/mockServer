@@ -162,6 +162,25 @@ app.post('/api/v1/project/', function (req, res) {
 });
 
 //update project
+app.put('/api/v1/project/:id', function (req, res) {
+    var bodyData = req.body;
+    var project = projectDataBase.projectData[req.params.id];
+    project.last_version_number = bodyData.last_version_number;
+    res.send(project);
+});
+
+//delete project
+app.delete('/api/v1/project/:id', function (req, res) {
+    projectDataBase.projectData[req.params.id].archived = 1;
+    var versionsByProject = versionDataBase.versionData.filter(function(Version) {
+        return Version.project_id == req.params.id;
+    });
+    for (var i = 0; i < versionsByProject.length; i++) {
+        versionsByProject[i].archived = 1;
+    };
+    res.send("Project " + req.params.id + " and its " + versionsByProject.length + 
+        " versions were deleted");
+});
 
 
 //=========== version requests =============
