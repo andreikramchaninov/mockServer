@@ -244,7 +244,6 @@ app.put('/api/v1/project/:id/versions/:number', function (req, res) {
     var updatedVersion = versionsByNumber[0];
     updatedVersion.approved = bodyData.approved;
     projectDataBase.projectData.last_version_number = req.params.number;
-    res.send(updatedVersion);
     var result = jsonGenerator(updatedVersion, null);
     res.send(result);
 });
